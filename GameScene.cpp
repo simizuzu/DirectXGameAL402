@@ -60,8 +60,8 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	// テクスチャ2番に読み込み
 	Sprite::LoadTexture(2, L"Resources/texture.png");
 
-	//modelSkydome = Model::CreateFromOBJ("skydome");
-	//modelGround = Model::CreateFromOBJ("ground");
+	modelSkydome = Model::CreateFromOBJ("skydome");
+	modelGround = Model::CreateFromOBJ("ground");
 	modelFighter = Model::CreateFromOBJ("chr_sword");
 	modelSphere = Model::CreateFromOBJ("sphere",true);
 
@@ -82,6 +82,14 @@ void GameScene::Update()
 	objGround->Update();
 	objFighter->Update();
 	objSphere->Update();
+
+	// オブジェクトの回転
+	{
+		XMFLOAT3 rot = objSphere->GetRotation();
+		rot.y += 1.0f;
+		objSphere->SetRotation(rot);
+		objFighter->SetRotation(rot);
+	}
 
 	debugText.Print("AD: move camera LeftRight", 50, 50, 1.0f);
 	debugText.Print("WS: move camera UpDown", 50, 70, 1.0f);
