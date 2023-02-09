@@ -14,5 +14,5 @@ float4 main(VSOutput input) : SV_TARGET
 	//return float4(texcolor.rgb * shade_color, texcolor.a * m_alpha);
 
 	float4 texcolor = tex.Sample(smp,input.uv);
-	return input.color;
+	return input.color * texcolor;
 }
