@@ -7,7 +7,7 @@
 #include "Object3d.h"
 #include "Sprite.h"
 #include <DirectXMath.h>
-#include"Light.h"
+#include "DirectionalLight.h"
 
 /// <summary>
 /// ゲームシーン
@@ -56,7 +56,7 @@ private: // メンバ変数
 	Input* input = nullptr;
 	DebugText debugText;
 	DebugCamera* camera = nullptr;
-	Light* light = nullptr;
+	DirectionalLight* light = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用

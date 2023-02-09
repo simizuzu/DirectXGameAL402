@@ -16,8 +16,8 @@ cbuffer cbuff1 : register(b1)
 
 cbuffer cbuff2 : register(b2)
 {
-    float3 lightv; //ライトの方向の単位ベクトル
-    float3 lightcolor; //ライトの色(RGB)
+    float3 DirectionalLightv; //ライトの方向の単位ベクトル
+    float3 DirectionalLightcolor; //ライトの色(RGB)
 }
 
 // 頂点シェーダーからピクセルシェーダーへのやり取りに使用する構造体

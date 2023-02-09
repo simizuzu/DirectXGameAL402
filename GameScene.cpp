@@ -52,7 +52,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	Object3d::SetCamera(camera);
 
 	//ライト生成
-	light = Light::Create();
+	light = DirectionalLight::Create();
 	//ライト色を設定
 	light->SetLightColor({ 1,1,1 });
 	//3Dオブジェクトにライトをセット

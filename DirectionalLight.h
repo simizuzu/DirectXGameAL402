@@ -6,7 +6,7 @@
 /// <summary>
 /// ライト
 /// </summary>
-class Light
+class DirectionalLight
 {
 private://エイリアス
 	//Microsoft::WRL::を省略
@@ -42,7 +42,7 @@ public://静的メンバ関数
 	/// インスタンス生成
 	/// </summary>
 	/// <returns>インスタンス</returns>
-	static Light* Create();
+	static DirectionalLight* Create();
 
 private:
 	//定数バッファ
