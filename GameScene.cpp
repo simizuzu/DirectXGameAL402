@@ -190,6 +190,7 @@ void GameScene::Draw()
 	objGround->Draw();
 	//objSphere->Draw();
 
+
 	switch (scene)
 	{
 	case GameScene::scene01:
