@@ -4,6 +4,7 @@
 #include <sstream>
 #include <iomanip>
 #include<sstream>
+#include <imgui.h>
 
 using namespace DirectX;
 
@@ -21,7 +22,7 @@ GameScene::~GameScene()
 	delete modelGround;
 	delete modelFighter;
 	delete camera;
-	delete light;
+	delete lightGroup;
 }
 
 void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
@@ -52,11 +53,9 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	Object3d::SetCamera(camera);
 
 	//ライト生成
-	light = DirectionalLight::Create();
-	//ライト色を設定
-	light->SetLightColor({ 1,1,1 });
+	lightGroup = LightGroup::Create();
 	//3Dオブジェクトにライトをセット
-	Object3d::SetLight(light);
+	Object3d::SetLightGroup(lightGroup);
 
 	// 背景スプライト生成
 	spriteBG = Sprite::Create(1, { 0.0f,0.0f });
@@ -86,7 +85,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 void GameScene::Update()
 {
 	camera->Update();
-	light->Update();
+	lightGroup->Update();
 
 	objSkydome->Update();
 	objGround->Update();
@@ -108,8 +107,6 @@ void GameScene::Update()
 	else if (input->PushKey(DIK_S)) { lightDir.m128_f32[1] -= 1.0f; }
 	if (input->PushKey(DIK_D)) { lightDir.m128_f32[0] += 1.0f; }
 	else if (input->PushKey(DIK_A)) { lightDir.m128_f32[0] -= 1.0f; }
-
-	light->SetLightDir(lightDir);
 
 	std::ostringstream debugstr;
 	debugstr << "lightDirFactor("
@@ -133,6 +130,19 @@ void GameScene::Update()
 	debugText.Print("AD: move camera LeftRight", 50, 50, 1.0f);
 	debugText.Print("WS: move camera UpDown", 50, 70, 1.0f);
 	debugText.Print("ARROW: move camera FrontBack", 50, 90, 1.0f);
+
+	{ //imgui殻のライトパラメータを反映
+		lightGroup->SetAmbientColor(XMFLOAT3(ambientColor0));
+
+		lightGroup->SetDirLightDir(0, XMVECTOR({ lightDir0[0],lightDir0[1] ,lightDir0[2] ,0 }));
+		lightGroup->SetDirLightColor(0, XMFLOAT3({ lightColor0 }));
+
+		lightGroup->SetDirLightDir(1, XMVECTOR({ lightDir1[0],lightDir1[1] ,lightDir1[2] ,0 }));
+		lightGroup->SetDirLightColor(1, XMFLOAT3({ lightColor1 }));
+
+		lightGroup->SetDirLightDir(2, XMVECTOR({ lightDir2[0],lightDir2[1] ,lightDir2[2] ,0 }));
+		lightGroup->SetDirLightColor(2, XMFLOAT3({ lightColor2 }));
+	}
 }
 
 void GameScene::Draw()
@@ -149,6 +159,17 @@ void GameScene::Draw()
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
+	ImGui::Begin("Light");
+	ImGui::SetWindowSize(ImVec2(0, 0));
+	ImGui::SetWindowPos(ImVec2(500, 200));
+	ImGui::ColorEdit3("ambientColor", ambientColor0, ImGuiColorEditFlags_Float);
+	ImGui::InputFloat3("lightDir0", lightDir0);
+	ImGui::ColorEdit3("lightColor0", lightColor0, ImGuiColorEditFlags_Float);
+	ImGui::InputFloat3("lightDir1", lightDir1);
+	ImGui::ColorEdit3("lightColor1", lightColor1, ImGuiColorEditFlags_Float);
+	ImGui::InputFloat3("lightDir2", lightDir2);
+	ImGui::ColorEdit3("lightColor2", lightColor2, ImGuiColorEditFlags_Float);
+	ImGui::End();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
