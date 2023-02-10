@@ -73,7 +73,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	modelGround = Model::CreateFromOBJ("ground");
 	modelFighter = Model::CreateFromOBJ("chr_sword");
 	modelSphere = Model::CreateFromOBJ("sphere",true);
-	modelSphere2 = Model::CreateFromOBJ("sphere2");
+	modelSphere2 = Model::CreateFromOBJ("sphere2",true);
 
 	objSkydome->SetModel(modelSkydome);
 	objGround->SetModel(modelGround);
