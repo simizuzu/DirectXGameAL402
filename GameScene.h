@@ -67,11 +67,13 @@ private: // メンバ変数
 	Model* modelGround = nullptr;
 	Model* modelFighter = nullptr;
 	Model* modelSphere = nullptr;
+	Model* modelSphere2 = nullptr;
 
 	Object3d* objSkydome = nullptr;
 	Object3d* objGround = nullptr;
 	Object3d* objFighter = nullptr;
 	Object3d* objSphere = nullptr;
+	Object3d* objSphere2 = nullptr;
 
 	// imgui
 	float ambientColor0[3] = { 1,1,1 };
@@ -84,4 +86,12 @@ private: // メンバ変数
 
 	float lightDir2[3] = { 1,0,0 };
 	float lightColor2[3] = { 0,0,1 };
+
+	enum Scene
+	{
+		scene01,
+		scene02
+	};
+
+	Scene scene = Scene::scene01;
 };

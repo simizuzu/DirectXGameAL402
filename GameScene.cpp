@@ -64,22 +64,26 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	objGround = Object3d::Create();
 	objFighter = Object3d::Create();
 	objSphere = Object3d::Create();
+	objSphere2 = Object3d::Create();
 
 	// テクスチャ2番に読み込み
 	Sprite::LoadTexture(2, L"Resources/texture.png");
 
 	modelSkydome = Model::CreateFromOBJ("skydome");
 	modelGround = Model::CreateFromOBJ("ground");
-	modelFighter = Model::CreateFromOBJ("sphere");
-	modelSphere = Model::CreateFromOBJ("sphere", true);
+	modelFighter = Model::CreateFromOBJ("chr_sword");
+	modelSphere = Model::CreateFromOBJ("sphere",true);
+	modelSphere2 = Model::CreateFromOBJ("sphere");
 
 	objSkydome->SetModel(modelSkydome);
 	objGround->SetModel(modelGround);
 	objFighter->SetModel(modelFighter);
 	objSphere->SetModel(modelSphere);
+	objSphere2->SetModel(modelSphere2);
 
-	objFighter->SetPosition({ 1.5,1,0 });
+	objFighter->SetPosition({ +1,0,0 });
 	objSphere->SetPosition({ -1.5,1,0 });
+	objSphere2->SetPosition({ 1.5,1,0 });
 }
 
 void GameScene::Update()
@@ -89,14 +93,13 @@ void GameScene::Update()
 
 	objSkydome->Update();
 	objGround->Update();
-	objFighter->Update();
-	objSphere->Update();
 
 	//オブジェクトの回転
 	{
 		XMFLOAT3 rot = objSphere->GetRotation();
 		rot.y += 1.0f;
 		objSphere->SetRotation(rot);
+		objSphere2->SetRotation(rot);
 		objFighter->SetRotation(rot);
 	}
 
@@ -143,6 +146,29 @@ void GameScene::Update()
 		lightGroup->SetDirLightDir(2, XMVECTOR({ lightDir2[0],lightDir2[1] ,lightDir2[2] ,0 }));
 		lightGroup->SetDirLightColor(2, XMFLOAT3({ lightColor2 }));
 	}
+
+	switch (scene)
+	{
+	case GameScene::scene01:
+		if (input->TriggerKey(DIK_2))
+		{
+			scene = scene02;
+		}
+
+		objFighter->Update();
+		objSphere->Update();
+		break;
+	case GameScene::scene02:
+		if (input->TriggerKey(DIK_1))
+		{
+			scene = scene01;
+		}
+		objSphere->Update();
+		objSphere2->Update();
+		break;
+	default:
+		break;
+	}
 }
 
 void GameScene::Draw()
@@ -161,7 +187,7 @@ void GameScene::Draw()
 	/// </summary>
 	ImGui::Begin("Light");
 	ImGui::SetWindowSize(ImVec2(0, 0));
-	ImGui::SetWindowPos(ImVec2(500, 200));
+	ImGui::SetWindowPos(ImVec2(100, 50));
 	ImGui::ColorEdit3("ambientColor", ambientColor0, ImGuiColorEditFlags_Float);
 	ImGui::InputFloat3("lightDir0", lightDir0);
 	ImGui::ColorEdit3("lightColor0", lightColor0, ImGuiColorEditFlags_Float);
@@ -181,11 +207,24 @@ void GameScene::Draw()
 	// 3Dオブジェクト描画前処理
 	Object3d::PreDraw(cmdList);
 
-	// 3Dオブクジェクトの描画
-	objSkydome->Draw();
 	objGround->Draw();
-	objFighter->Draw();
-	objSphere->Draw();
+	objSkydome->Draw();
+
+
+	// 3Dオブクジェクトの描画
+	switch (scene)
+	{
+	case GameScene::scene01:
+		objFighter->Draw();
+		objSphere->Draw();
+		break;
+	case GameScene::scene02:
+		objSphere->Draw();
+		objSphere2->Draw();
+		break;
+	default:
+		break;
+	}
 
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
