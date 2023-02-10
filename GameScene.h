@@ -64,14 +64,31 @@ class GameScene {
 
 	Model* modelSkydome = nullptr;
 	Model* modelGround = nullptr;
-	Model* modelFighter = nullptr;
+	Model* modelSphere = nullptr;
+	Model* modelSphere2 = nullptr;
+	Model* modelTriangle = nullptr;
 
 	Object3d* objSkydome = nullptr;
 	Object3d* objGround = nullptr;
-	Object3d* objFighter = nullptr;
+	Object3d* objSphere = nullptr;
+	Object3d* objSphere2 = nullptr;
+	Object3d* objTriangle = nullptr;
+
+	bool hit = false;
 
 	// 当たり判定 球
 	Sphere sphere;
 	// 当たり判定 平面
 	Plane plane;
+	// 当たり判定 三角形
+	Triangle triangle;
+
+	enum Scene
+	{
+		scene01,
+		scene02,
+		scene03
+	};
+
+	Scene scene = scene01;
 };

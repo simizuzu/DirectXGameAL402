@@ -127,6 +127,8 @@ public: // メンバ関数
 	/// <param name="model">モデル</param>
 	void SetModel(Model* model) { this->model = model; }
 
+	void SetColor(XMFLOAT4 color) { this->color = color; }
+
 	void SetBillboard(bool isBillboard) { this->isBillboard = isBillboard; }
 
 private: // メンバ変数
