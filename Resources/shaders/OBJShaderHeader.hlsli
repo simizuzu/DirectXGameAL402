@@ -14,10 +14,25 @@ cbuffer cbuff1 : register(b1)
     float m_alpha : packoffset(c2.w); // アルファ
 }
 
+//cbuffer cbuff2 : register(b2)
+//{
+//    float3 DirectionalLightv; //ライトの方向の単位ベクトル
+//    float3 DirectionalLightcolor; //ライトの色(RGB)
+//}
+
+static const uint DIR_LIGHT_NUM = 3;
+
+struct DirLight
+{
+    float3 lightv;
+    float3 lightcolor;
+    uint active;
+};
+
 cbuffer cbuff2 : register(b2)
 {
-    float3 DirectionalLightv; //ライトの方向の単位ベクトル
-    float3 DirectionalLightcolor; //ライトの色(RGB)
+    float3 ambientColor;
+    DirLight dirLights[DIR_LIGHT_NUM];
 }
 
 // 頂点シェーダーからピクセルシェーダーへのやり取りに使用する構造体

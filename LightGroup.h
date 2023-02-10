@@ -35,12 +35,18 @@ private: // 静的メンバ変数
 	// デバイス
 	static ID3D12Device* device;
 
-private: // 静的メンバ関数
+public: // 静的メンバ関数
 	/// <summary>
 	/// 静的初期化
 	/// </summary>
 	/// <param name="device">デバイス</param>
 	static void StaticInitialize(ID3D12Device* device);
+
+	/// <summary>
+	/// インスタンス生成
+	/// </summary>
+	/// <returns>インスタンス</returns>
+	static LightGroup* Create();
 
 public: // メンバ関数
 	/// <summary>
@@ -49,9 +55,14 @@ public: // メンバ関数
 	void Initialize();
 
 	/// <summary>
-	/// 定数バッファへデータ転送
+	/// 更新
 	/// </summary>
-	void TransferConstBuffer();
+	void Update();
+
+	/// <summary>
+	/// 描画
+	/// </summary>
+	void Draw(ID3D12GraphicsCommandList* cmdList,UINT rootPramIndex);
 
 	/// <summary>
 	/// 環境光のライト色をセット
@@ -79,6 +90,17 @@ public: // メンバ関数
 	/// <param name="index">ライト番号</param>
 	/// <param name="lightcolor">ライト色</param>
 	void SetDirLightColor(int index, const XMFLOAT3& lightcolor);
+
+private:
+	/// <summary>
+	/// 定数バッファへデータ転送
+	/// </summary>
+	void TransferConstBuffer();
+
+	/// <summary>
+	/// 標準のライト設定
+	/// </summary>
+	void DefaultLightSetting();
 
 private: // メンバ変数
 	//定数バッファ

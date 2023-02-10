@@ -19,8 +19,18 @@ void LightGroup::StaticInitialize(ID3D12Device* device)
 	LightGroup::device = device;
 }
 
+LightGroup* LightGroup::Create()
+{
+	LightGroup* instance = new LightGroup();
+	instance->Initialize();
+	return instance;
+}
+
 void LightGroup::Initialize()
 {
+	// 標準ライトの設定
+	DefaultLightSetting();
+
 	// nullptrチェック
 	assert(device);
 
@@ -39,6 +49,22 @@ void LightGroup::Initialize()
 
 	// 定数バッファへデータ転送
 	TransferConstBuffer();
+}
+
+void LightGroup::Update()
+{
+	// 値の更新があったときだけ定数バッファに転送する
+	if (dirty)
+	{
+		TransferConstBuffer();
+		dirty = false;
+	}
+}
+
+void LightGroup::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootPramIndex)
+{
+	// 定数バッファビューをセット
+	cmdList->SetGraphicsRootConstantBufferView(rootPramIndex, constBuff->GetGPUVirtualAddress());
 }
 
 void LightGroup::TransferConstBuffer()
@@ -69,6 +95,21 @@ void LightGroup::TransferConstBuffer()
 
 		constBuff->Unmap(0, nullptr);
 	}
+}
+
+void LightGroup::DefaultLightSetting()
+{
+	dirLights[0].SetActive(true);
+	dirLights[0].SetLightColor({1.0f,1.0f,1.0f});
+	dirLights[0].SetLightDir({ 0.0f,-1.0f,0.0f,0 });
+
+	dirLights[1].SetActive(true);
+	dirLights[1].SetLightColor({ 1.0f,1.0f,1.0f });
+	dirLights[1].SetLightDir({ +0.5f,+1.0f,0.2f,0 });
+
+	dirLights[2].SetActive(true);
+	dirLights[2].SetLightColor({ 1.0f,1.0f,1.0f });
+	dirLights[2].SetLightDir({ -0.5f,+1.0f,-0.2f,0 });
 }
 
 void LightGroup::SetAmbientColor(const XMFLOAT3& color)
